@@ -1,0 +1,12 @@
+{
+  "name": "@upcourse/root",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "libs/*",
+    "utils/*"
+  ]
+}
