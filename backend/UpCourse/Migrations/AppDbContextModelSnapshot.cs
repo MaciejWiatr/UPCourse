@@ -17,29 +17,49 @@ namespace UpCourse.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.8");
 
+            modelBuilder.Entity("CourseCourseTag", b =>
+                {
+                    b.Property<int>("CoursesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CoursesId", "TagsId");
+
+                    b.HasIndex("TagsId");
+
+                    b.ToTable("CourseCourseTag");
+                });
+
             modelBuilder.Entity("UpCourse.Entities.Course", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("AuthorId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CourseSourceId")
+                    b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Url")
+                    b.Property<string>("Name")
                         .HasColumnType("longtext");
+
+                    b.Property<int>("SourceId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TopicId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("CourseSourceId");
+                    b.HasIndex("SourceId");
+
+                    b.HasIndex("TopicId");
 
                     b.ToTable("Courses");
                 });
@@ -78,13 +98,41 @@ namespace UpCourse.Migrations
                     b.ToTable("CourseSources");
                 });
 
+            modelBuilder.Entity("UpCourse.Entities.CourseTag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CourseTag");
+                });
+
+            modelBuilder.Entity("UpCourse.Entities.CourseTopic", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CourseTopic");
+                });
+
             modelBuilder.Entity("UpCourse.Entities.CourseUpvote", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("CourseId")
+                    b.Property<int>("CourseId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -94,26 +142,53 @@ namespace UpCourse.Migrations
                     b.ToTable("CourseUpvotes");
                 });
 
+            modelBuilder.Entity("CourseCourseTag", b =>
+                {
+                    b.HasOne("UpCourse.Entities.Course", null)
+                        .WithMany()
+                        .HasForeignKey("CoursesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UpCourse.Entities.CourseTag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("UpCourse.Entities.Course", b =>
                 {
                     b.HasOne("UpCourse.Entities.CourseAuthor", "Author")
                         .WithMany("Courses")
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("UpCourse.Entities.CourseSource", "CourseSource")
+                    b.HasOne("UpCourse.Entities.CourseSource", "Source")
+                        .WithMany()
+                        .HasForeignKey("SourceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UpCourse.Entities.CourseTopic", "Topic")
                         .WithMany("Courses")
-                        .HasForeignKey("CourseSourceId");
+                        .HasForeignKey("TopicId");
 
                     b.Navigation("Author");
 
-                    b.Navigation("CourseSource");
+                    b.Navigation("Source");
+
+                    b.Navigation("Topic");
                 });
 
             modelBuilder.Entity("UpCourse.Entities.CourseUpvote", b =>
                 {
                     b.HasOne("UpCourse.Entities.Course", null)
                         .WithMany("Upvotes")
-                        .HasForeignKey("CourseId");
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("UpCourse.Entities.Course", b =>
@@ -126,7 +201,7 @@ namespace UpCourse.Migrations
                     b.Navigation("Courses");
                 });
 
-            modelBuilder.Entity("UpCourse.Entities.CourseSource", b =>
+            modelBuilder.Entity("UpCourse.Entities.CourseTopic", b =>
                 {
                     b.Navigation("Courses");
                 });

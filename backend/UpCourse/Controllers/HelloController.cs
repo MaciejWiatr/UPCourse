@@ -4,7 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using UpCourse.DataAccess;
+using UpCourse.Dtos;
+using UpCourse.Entities;
 
 namespace UpCourse.Controllers
 {
@@ -12,18 +16,25 @@ namespace UpCourse.Controllers
     [Route("[controller]")]
     public class HelloController : ControllerBase
     {
-
+        private readonly IMapper _mapper;
         private readonly AppDbContext _db;
 
-        public HelloController(AppDbContext dbContext)
+        public HelloController(AppDbContext dbContext, IMapper mapper)
         {
             _db = dbContext;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public List<CourseResponseDto> Get()
         {
-            return Ok(new {message = "hello world", dbtest = _db.Courses});
+            var courses = _db.Courses.Include(c => c.Author)
+                .Include(c=>c.Source).Include(c=>c.Upvotes)
+                .Include(c=>c.Tags)
+                .Include(c=>c.Topic)
+                .ToList();
+            var resp = _mapper.Map<List<CourseResponseDto>>(courses);
+            return resp;
         }
     }
 }

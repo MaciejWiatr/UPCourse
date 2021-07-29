@@ -29,6 +29,7 @@ namespace UpCourse.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Course>().Property(c => c.Id).IsRequired();
+            modelBuilder.Entity<Course>().HasOne(c => c.Author).WithMany(c => c.Courses);
             modelBuilder.Entity<CourseAuthor>().Property(c => c.Id).IsRequired();
             modelBuilder.Entity<CourseSource>().Property(c => c.Id).IsRequired();
             modelBuilder.Entity<CourseUpvote>().Property(c => c.Id).IsRequired();
