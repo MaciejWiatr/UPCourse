@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using UpCourse.DataAccess;
 using UpCourse.Dtos;
 using UpCourse.Entities;
 
@@ -11,8 +12,11 @@ namespace UpCourse.MappingProfiles
             CreateMap<Course, CourseResponseDto>();
             CreateMap<CourseAuthor, AuthorDto>();
             CreateMap<CourseSource, CourseSourceDto>();
+            CreateMap<CourseSourceDto, CourseSource>();
             CreateMap<CourseTag, TagDto>();
             CreateMap<CourseTopic, TopicDto>();
+            CreateMap<CourseCreateDto, Course>();
+            CreateMap<CourseResponseDto, Course>();
         }
     }
 }

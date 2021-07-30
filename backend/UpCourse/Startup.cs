@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using UpCourse.Config;
 using UpCourse.DataAccess;
 using UpCourse.MappingProfiles;
+using UpCourse.Services;
 
 namespace UpCourse
 {
@@ -32,6 +33,7 @@ namespace UpCourse
             services.Configure<DbConfig>(Configuration.GetSection("Database"));
             services.AddDbContext<AppDbContext>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<ICourseService, CourseService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

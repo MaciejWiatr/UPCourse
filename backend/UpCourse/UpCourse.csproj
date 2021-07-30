@@ -20,6 +20,8 @@
 
   <ItemGroup>
     <Folder Include="Dtos\" />
+    <Folder Include="Dtos\request" />
+    <Folder Include="Dtos\response" />
   </ItemGroup>
 
 </Project>

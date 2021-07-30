@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using UpCourse.Entities;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace UpCourse.Dtos
 {
-    public class CourseCreateDto
+    public class CourseUpdateDto
     {
         [Required]
         public int TopicId { get; set; }

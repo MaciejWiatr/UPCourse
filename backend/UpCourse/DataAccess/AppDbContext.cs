@@ -20,6 +20,9 @@ namespace UpCourse.DataAccess
         public DbSet<CourseAuthor> CourseAuthors { get; set; }
         public DbSet<CourseSource> CourseSources { get; set; }
         public DbSet<CourseUpvote> CourseUpvotes { get; set; }
+        public DbSet<CourseTopic> CourseTopics { get; set; }
+        public DbSet<CourseTag> CourseTags { get; set; }
+        
 
         public AppDbContext(IOptions<DbConfig> settings)
         {
