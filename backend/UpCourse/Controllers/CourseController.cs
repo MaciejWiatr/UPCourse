@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using UpCourse.Dtos;
+using UpCourse.Enums;
 using UpCourse.Services;
 
 namespace UpCourse.Controllers
@@ -17,9 +19,9 @@ namespace UpCourse.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<CourseListResponseDto>> GetAllCourses()
+        public ActionResult<List<CourseListResponseDto>> GetAllCourses( [FromQuery] CourseOrderBy orderBy = CourseOrderBy.Upvotes , [FromQuery] string q = "")
         {
-            var result = _courseService.GetAllCourses();
+            var result = _courseService.GetAllCourses(q, orderBy);
             return result;
         }
 

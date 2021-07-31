@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using UpCourse.DataAccess;
 using UpCourse.Dtos;
 using UpCourse.Entities;
+using UpCourse.Enums;
 using UpCourse.Exceptions;
 
 namespace UpCourse.Services
@@ -15,7 +17,7 @@ namespace UpCourse.Services
         void Delete(int courseId);
         void Update(int courseId, CourseUpdateDto dto);
         CourseResponseDto GetById(int id);
-        List<CourseListResponseDto> GetAllCourses();
+        List<CourseListResponseDto> GetAllCourses(string query, CourseOrderBy? orderBy);
     }
 
     public class CourseService : ICourseService
@@ -29,13 +31,30 @@ namespace UpCourse.Services
             _mapper = mapper;
         }
 
-        public List<CourseListResponseDto> GetAllCourses()
+        public List<CourseListResponseDto> GetAllCourses(string query, CourseOrderBy? orderBy)
         {
+            query = query.ToLower();
             var courses = _db.Courses
                 .Include(c => c.Upvotes)
                 .Include(c => c.Tags)
-                .Include(c => c.Topic);
+                .Include(c => c.Topic).Where(c =>
+                    c.Name.ToLower().Contains(query)
+                    || c.Description.ToLower().Contains(query)
+                    || c.Topic.Name.ToLower().Contains(query))
+                .ToList();
 
+            if (orderBy is not null)
+            {
+                switch (orderBy)
+                {
+                    case CourseOrderBy.Upvotes:
+                        courses = courses.OrderBy(c => c.Upvotes.Count()).ToList();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            
             var coursesDtos = _mapper.Map<List<CourseListResponseDto>>(courses);
             return coursesDtos;
         }
