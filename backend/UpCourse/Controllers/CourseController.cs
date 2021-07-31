@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using UpCourse.Dtos;
 using UpCourse.Services;
 
@@ -13,6 +14,13 @@ namespace UpCourse.Controllers
         public CourseController(ICourseService courseService)
         {
             _courseService = courseService;
+        }
+
+        [HttpGet]
+        public ActionResult<List<CourseListResponseDto>> GetAllCourses()
+        {
+            var result = _courseService.GetAllCourses();
+            return result;
         }
 
         [HttpGet("{id:int}")]

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using UpCourse.DataAccess;
@@ -14,6 +15,7 @@ namespace UpCourse.Services
         void Delete(int courseId);
         void Update(int courseId, CourseUpdateDto dto);
         CourseResponseDto GetById(int id);
+        List<CourseListResponseDto> GetAllCourses();
     }
 
     public class CourseService : ICourseService
@@ -25,6 +27,17 @@ namespace UpCourse.Services
         {
             _db = dbContext;
             _mapper = mapper;
+        }
+
+        public List<CourseListResponseDto> GetAllCourses()
+        {
+            var courses = _db.Courses
+                .Include(c => c.Upvotes)
+                .Include(c => c.Tags)
+                .Include(c => c.Topic);
+
+            var coursesDtos = _mapper.Map<List<CourseListResponseDto>>(courses);
+            return coursesDtos;
         }
 
         public CourseResponseDto GetById(int id)
@@ -66,6 +79,7 @@ namespace UpCourse.Services
             course.Description = dto.Description;
             course.AuthorId = dto.AuthorId;
             course.Source.Url = dto.Source.Url;
+            // TODO: Allow for platform url change
             course.Source.PlatformName = dto.Source.PlatformName;
             course.TopicId = dto.TopicId;
             _db.SaveChanges();

@@ -17,6 +17,7 @@ namespace UpCourse.MappingProfiles
             CreateMap<CourseTopic, TopicDto>();
             CreateMap<CourseCreateDto, Course>();
             CreateMap<CourseResponseDto, Course>();
+            CreateMap<Course, CourseListResponseDto>();
         }
     }
 }
