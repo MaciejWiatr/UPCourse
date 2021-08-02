@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using UpCourse.Config;
 using UpCourse.DataAccess;
 using UpCourse.MappingProfiles;
+using UpCourse.Middleware;
 using UpCourse.Services;
 
 namespace UpCourse
@@ -35,6 +36,9 @@ namespace UpCourse
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<ICourseService, CourseService>();
             services.AddControllers();
+            services.AddScoped<ExceptionHandlerMiddleware>();
+            
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "UpCourse", Version = "v1" });
@@ -51,6 +55,7 @@ namespace UpCourse
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UpCourse v1"));
             }
 
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
             app.UseRouting();
 
             app.UseAuthorization();
