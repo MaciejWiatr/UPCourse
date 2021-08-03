@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpCourse", "UpCourse.csproj", "{6491E3F3-94E8-4F5A-8CEB-DAAF95BB37E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Upcourse.Test", "Upcourse.Test\Upcourse.Test.csproj", "{F55C21C5-3C27-4262-97A8-F7BDE51064BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpCourse.API", "UpCourse.API\UpCourse.API.csproj", "{3C8AA99E-42CF-47E3-ACC0-5677FD055040}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6491E3F3-94E8-4F5A-8CEB-DAAF95BB37E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6491E3F3-94E8-4F5A-8CEB-DAAF95BB37E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6491E3F3-94E8-4F5A-8CEB-DAAF95BB37E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6491E3F3-94E8-4F5A-8CEB-DAAF95BB37E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F55C21C5-3C27-4262-97A8-F7BDE51064BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F55C21C5-3C27-4262-97A8-F7BDE51064BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F55C21C5-3C27-4262-97A8-F7BDE51064BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F55C21C5-3C27-4262-97A8-F7BDE51064BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C8AA99E-42CF-47E3-ACC0-5677FD055040}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C8AA99E-42CF-47E3-ACC0-5677FD055040}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C8AA99E-42CF-47E3-ACC0-5677FD055040}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C8AA99E-42CF-47E3-ACC0-5677FD055040}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
