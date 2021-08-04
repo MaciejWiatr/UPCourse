@@ -2,12 +2,14 @@
 using System.Linq;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using UpCourse.API.DataAccess;
 using UpCourse.API.Dtos.request;
 using UpCourse.API.Dtos.response;
 using UpCourse.API.Entities;
 using UpCourse.API.Enums;
 using UpCourse.API.Exceptions;
+using Xunit.Sdk;
 
 namespace UpCourse.API.Services
 {
@@ -18,6 +20,8 @@ namespace UpCourse.API.Services
         void Update(int courseId, CourseUpdateDto dto);
         CourseResponseDto GetById(int id);
         List<CourseListResponseDto> GetAllCourses(string query, CourseOrderBy? orderBy);
+        void Upvote(int courseId);
+        void Downvote(int courseId);
     }
 
     public class CourseService : ICourseService
@@ -37,7 +41,9 @@ namespace UpCourse.API.Services
             var courses = _db.Courses
                 .Include(c => c.Upvotes)
                 .Include(c => c.Tags)
-                .Include(c => c.Topic).Where(c =>
+                .Include(c => c.Topic)
+                .Include(c=>c.Downvotes)
+                .Where(c =>
                     c.Name.ToLower().Contains(query)
                     || c.Description.ToLower().Contains(query)
                     || c.Topic.Name.ToLower().Contains(query))
@@ -66,7 +72,9 @@ namespace UpCourse.API.Services
                 .Include(c => c.Source)
                 .Include(c => c.Upvotes)
                 .Include(c => c.Tags)
-                .Include(c => c.Topic).FirstOrDefault(c => c.Id == id);
+                .Include(c => c.Topic)
+                .Include(c=>c.Downvotes)
+                .FirstOrDefault(c => c.Id == id);
 
             if (course is null) throw new NotFoundException();
             var courseDto = _mapper.Map<CourseResponseDto>(course);
@@ -101,6 +109,22 @@ namespace UpCourse.API.Services
             // TODO: Allow for platform url change
             course.Source.PlatformName = dto.Source.PlatformName;
             course.TopicId = dto.TopicId;
+            _db.SaveChanges();
+        }
+
+        public void Upvote(int courseId)
+        {
+            var course = _db.Courses.Include(c => c.Upvotes).FirstOrDefault(c => c.Id == courseId);
+            if (course is null) throw new NotEmptyException();
+            course.Upvotes.Add(new CourseUpvote(){CourseId = course.Id});
+            _db.SaveChanges();
+        }
+        
+        public void Downvote(int courseId)
+        {
+            var course = _db.Courses.Include(c => c.Downvotes).FirstOrDefault(c => c.Id == courseId);
+            if (course is null) throw new NotEmptyException();
+            course.Downvotes.Add(new CourseDownvote(){CourseId = course.Id});
             _db.SaveChanges();
         }
     }

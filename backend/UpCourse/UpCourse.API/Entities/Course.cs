@@ -12,6 +12,7 @@ namespace UpCourse.API.Entities
         public int SourceId { get; set; }
         public virtual CourseSource Source { get; set; }
         public virtual List<CourseUpvote> Upvotes { get; set; }
+        public virtual List<CourseDownvote> Downvotes { get; set; }
         public virtual List<CourseTag> Tags { get; set; }
         public int TopicId { get; set; }
         public virtual CourseTopic Topic { get; set; }

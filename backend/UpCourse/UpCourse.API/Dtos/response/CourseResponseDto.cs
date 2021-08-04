@@ -12,6 +12,7 @@ namespace UpCourse.API.Dtos.response
         public AuthorDto Author { get; set; }
         public CourseSourceDto Source { get; set; }
         public int UpvotesCount { get; set; }
+        public int DownvotesCount { get; set; }
         public List<TagDto> Tags { get; set; }
     }
 }

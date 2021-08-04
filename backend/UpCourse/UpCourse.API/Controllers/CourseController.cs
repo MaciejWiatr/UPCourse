@@ -52,6 +52,20 @@ namespace UpCourse.API.Controllers
             _courseService.Update(id, dto);
             return Ok();
         }
+
+        [HttpPost("{id:int}/upvote")]
+        public ActionResult UpvoteCourse([FromRoute] int id)
+        {
+            _courseService.Downvote(id);
+            return Ok();
+        }
+        
+        [HttpPost("{id:int}/downvote")]
+        public ActionResult DownvoteCourse([FromRoute] int id)
+        {
+            _courseService.Downvote(id);
+            return Ok();
+        }
         
     }
 }
