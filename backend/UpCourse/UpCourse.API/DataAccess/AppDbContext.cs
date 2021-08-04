@@ -17,11 +17,12 @@ namespace UpCourse.API.DataAccess
         public DbSet<CourseUpvote> CourseUpvotes { get; set; }
         public DbSet<CourseTopic> CourseTopics { get; set; }
         public DbSet<CourseTag> CourseTags { get; set; }
-        
+        private bool TestRun { get; set; }
 
-        public AppDbContext(IOptions<DbConfig> settings)
+        public AppDbContext(IOptions<DbConfig> settings, bool testRun = false)
         {
             _dbConfig = settings.Value;
+            TestRun = testRun;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,7 +37,22 @@ namespace UpCourse.API.DataAccess
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var serverVersion = new MySqlServerVersion(new Version());
-            optionsBuilder.UseMySql(DbUtils.GenerateConnectionString(_dbConfig), serverVersion);
+
+            if (!TestRun)
+            {
+                optionsBuilder.UseMySql(DbUtils.GenerateConnectionString(_dbConfig), serverVersion);
+            }
+            else
+            {
+                var testConfig = new DbConfig()
+                {
+                    Host = "localhost",
+                    Login = "root",
+                    Password = "",
+                    DatabaseName = "upctest"
+                };
+                optionsBuilder.UseMySql(DbUtils.GenerateConnectionString(testConfig), serverVersion);
+            }
         }
     }
 }
